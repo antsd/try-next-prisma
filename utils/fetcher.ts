@@ -3,7 +3,7 @@ export const fetcher = (url, data) =>
     method: data ? 'POST' : 'GET',
     credentials: 'include',
     headers: {
-      'content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
   }).then((r) => {

@@ -6,6 +6,7 @@ import {
   Divider,
   Form,
   Header,
+  Image,
   Icon,
   Table,
 } from 'semantic-ui-react';
@@ -110,6 +111,54 @@ export default function Home({ initialUsers }) {
           </Form.Group>
           <Form.Button>Submit</Form.Button>
         </Form>
+        <Divider horizontal>User</Divider>
+        <Table basic='very' celled collapsing>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>User</Table.HeaderCell>
+              <Table.HeaderCell>Email</Table.HeaderCell>
+              <Table.HeaderCell>Action</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {users.map((user, i) => (
+              <Table.Row key={i}>
+                <Table.Cell>
+                  <Header as='h4' image>
+                    <Image
+                      src={user.avatar}
+                      alt={user.firstName}
+                      rounded
+                      size='mini'
+                    />
+                    <Header.Content>
+                      {user.firstName + ' ' + user.lastName}
+                      <Header.Subheader>
+                        {capitalize(user.role)}
+                      </Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>
+                  <Button
+                    animated='fade'
+                    color='red'
+                    onClick={async () => {
+                      await fetcher('/api/delete', { id: user.id });
+                      await setUsers(users.filter((usr) => usr !== user));
+                    }}
+                  >
+                    <Button.Content visible>Delete</Button.Content>
+                    <Button.Content hidden>
+                      <Icon name='user delete' />
+                    </Button.Content>
+                  </Button>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
       </Container>
     </>
   );
